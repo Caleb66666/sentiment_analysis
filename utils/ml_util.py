@@ -4,8 +4,13 @@ from torch import nn
 
 
 def init_unk(tensor_, vocab_size):
-    bound = np.sqrt(6.9) / np.sqrt(vocab_size)
+    bound = np.sqrt(6.0) / np.sqrt(vocab_size)
     return torch.from_numpy(np.random.uniform(-bound, bound, tensor_.shape))
+
+
+def embed_init_unk(vocab_size, embed_dim):
+    bound = np.sqrt(6.0) / np.sqrt(vocab_size)
+    return torch.from_numpy(np.random.uniform(-bound, bound, embed_dim))
 
 
 def init_network(model, method='xavier', exclude='embedding'):

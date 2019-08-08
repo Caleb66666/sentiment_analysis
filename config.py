@@ -51,9 +51,10 @@ valid_file = abspath("data/sa.valid.csv")
 # 模型参数数据、
 resume = True
 user_dict = abspath("library/user.dict")
-pre_embeddings = abspath("library/embeddings.300w.txt")
 vector_cache = abspath("library/")
 min_freq = 1
+use_pre_embed = False
+pre_embeddings = abspath("library/embeddings.300w.txt")
 extend_vocab = True
 pre_vocab_size = 200000
 

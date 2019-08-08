@@ -32,7 +32,7 @@ class BatchWrapper(object):
 
 class DataLoader(object):
     def __init__(self, data_fields, train_file, valid_file, batch_size, device, skip_header, delimiter, pre_embeddings,
-                 vector_cache, min_freq=2, extend_vocab=True, pre_vocab_size=200000):
+                 vector_cache, min_freq=2, extend_vocab=True, pre_vocab_size=200000, use_pre_embedding=False):
         self.x_field = Field(sequential=True, tokenize=self.word_tokenize, batch_first=True, include_lengths=True)
         self.y_field = LabelField(batch_first=True)
         self.train_fields, self.x_var, self.y_vars = self.parse_fields(data_fields, self.x_field, self.y_field)
@@ -42,12 +42,13 @@ class DataLoader(object):
         self.valid_ds = TabularDataset(valid_file, fields=self.train_fields, skip_header=skip_header, format="csv",
                                        csv_reader_params={"delimiter": delimiter})
 
-        vectors = Vectors(pre_embeddings, vector_cache)
         self.x_field.build_vocab(self.train_ds, min_freq=min_freq)
-        if extend_vocab:
-            self.extend_vocab_with_vectors(self.x_field.vocab, vectors, pre_vocab_size)
-        vectors.unk_init = partial(init_unk, vocab_size=len(self.x_field.vocab))
-        self.x_field.vocab.load_vectors(vectors)
+        if use_pre_embedding:
+            vectors = Vectors(pre_embeddings, vector_cache)
+            if extend_vocab:
+                self.extend_vocab_with_vectors(self.x_field.vocab, vectors, pre_vocab_size)
+            vectors.unk_init = partial(init_unk, vocab_size=len(self.x_field.vocab))
+            self.x_field.vocab.load_vectors(vectors)
         self.y_field.build_vocab(self.train_ds)
 
         self.train_iter, self.valid_iter = BucketIterator.splits(
