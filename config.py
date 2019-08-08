@@ -3,8 +3,8 @@ from utils.path_util import abspath
 import torch
 
 # 训练参数
-task_name = "cnn_v18"
-epochs = 120
+task_name = "cnn_v20"
+epochs = 80
 batch_size = 64
 embed_dim = 200
 n_filters = 128
@@ -12,9 +12,9 @@ filter_sizes = [3, 4, 5]
 n_hidden = 1024
 dropout = 0.5
 init_lr = 1e-2
-lr_decay = 0.95
+lr_decay = 0.96
 min_lr = 1e-4
-weight_decay = 1e-4
+weight_decay = 1e-5
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # csv解析字段以及顺序, x代表文本，y代表标签
@@ -53,7 +53,7 @@ resume = True
 user_dict = abspath("library/user.dict")
 pre_embeddings = abspath("library/embeddings.300w.txt")
 vector_cache = abspath("library/")
-min_freq = 2
+min_freq = 1
 extend_vocab = True
 pre_vocab_size = 200000
 

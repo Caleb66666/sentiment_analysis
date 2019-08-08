@@ -55,7 +55,8 @@ def main():
     logger.info(f"train len: {len(dl.train_ds)}, valid len: {len(dl.valid_ds)}, train batches: {len(dl.train_wrapper)},"
                 f"valid batches: {len(dl.valid_wrapper)}, batch size: {batch_size}")
 
-    model = TextCnn(dl.vocab, embed_dim, n_filters, filter_sizes, dl.num_labels, dl.num_classes, dropout, n_hidden)
+    model = TextCnn(dl.vocab, embed_dim, n_filters, filter_sizes, dl.num_labels, dl.num_classes, dropout, n_hidden,
+                    dl.unk_idx, dl.pad_idx)
     model = model.to(device)
     criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=init_lr, weight_decay=weight_decay)

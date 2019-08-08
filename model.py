@@ -4,10 +4,11 @@ from torch.nn import functional as f
 
 
 class TextCnn(nn.Module):
-    def __init__(self, vocab, embed_dim, n_filters, filter_sizes, num_labels, num_classes, dropout, n_hidden):
+    def __init__(self, vocab, embed_dim, n_filters, filter_sizes, num_labels, num_classes, dropout, n_hidden, unk_idx,
+                 pad_idx):
         super(TextCnn, self).__init__()
         self.dropout = nn.Dropout(dropout)
-        self.embedding = nn.Embedding(len(vocab), embed_dim)
+        self.embedding = nn.Embedding(len(vocab), embed_dim, padding_idx=pad_idx)
         self.embedding.weight.data.copy_(vocab.vectors)
         self.embedding.weight.requires_grad = False
 

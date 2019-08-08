@@ -45,11 +45,8 @@ class DataLoader(object):
         vectors = Vectors(pre_embeddings, vector_cache)
         self.x_field.build_vocab(self.train_ds, min_freq=min_freq)
         if extend_vocab:
-            unk_init = partial(init_unk, vocab_size=pre_vocab_size)
             self.extend_vocab_with_vectors(self.x_field.vocab, vectors, pre_vocab_size)
-        else:
-            unk_init = partial(init_unk, vocab_size=len(self.x_field.vocab))
-        vectors.unk_init = unk_init
+        vectors.unk_init = partial(init_unk, vocab_size=len(self.x_field.vocab))
         self.x_field.vocab.load_vectors(vectors)
         self.y_field.build_vocab(self.train_ds)
 
